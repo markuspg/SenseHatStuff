@@ -33,12 +33,15 @@ def main():
     print( "<---- ImageDisplay ---->\n" )
     if len( sys.argv ) != 2:
         print( "There must be exactly one argument, the path of the to be displayed image" )
+        return 0
     else:
         print( "Displaying \'{0}\'".format( sys.argv[ 1 ] ) )
     imageMatrix = LoadImageFromBIDF( sys.argv[ 1 ] )
     sense.set_pixels( imageMatrix )
     time.sleep( 3 )
     sense.clear()
+
+    return 0
 
 if __name__ == "__main__":
     main()

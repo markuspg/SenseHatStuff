@@ -21,7 +21,7 @@
 ##
 ##############################################################################
 
-def CharToPixel( argChar ):
+def CharToColour( argChar ):
     # Any character being non-'X' will be treated as a blank pixel
     if argChar != 'X':
         return [ 0, 0, 0 ]
@@ -39,7 +39,7 @@ def LoadImageFromBIDF( argPath ):
                 break
             # If lines are to long, crop them
             for char in line[ : 8 ]:
-                imageMatrix.append( CharToPixel( char ) )
+                imageMatrix.append( CharToColour( char ) )
             if len( imageMatrix ) % 8 != 0:
                 imageMatrix.extend( [ [ 0, 0, 0 ] for i in range( 8 - len( imageMatrix ) % 8 ) ] )
     assert len( imageMatrix ) == 64
