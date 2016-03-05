@@ -71,4 +71,16 @@ def UpdateScreen( argColour, argPixelStatuses, argSense ):
     colourMatrix = [ StatusToColour( argColour, i ) for i in argPixelStatuses ]
     argSense.set_pixels( colourMatrix )
 
+def UpdatePixelsFromPixelMatrix( argColour, argMatrix, argSense ):
+    """
+    In contrast to the other 'Update'-function this only updates the 'True' pixels.
+
+    This allows painting coloured screens by painting one colour after another
+    """
+    for i in range( max( 64, len( argMatrix ) ) ):
+        if argMatrix[ i ] == True:
+            column = i % 8
+            row = int( i / 8 )
+            argSense.set_pixel( column, row, argColour )
+
 # vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
