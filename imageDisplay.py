@@ -24,8 +24,9 @@
 import sys
 import time
 
+import senseSuppLib
+
 from sense_hat import SenseHat
-from senseSuppLib import LoadImageFromBIDF
 
 def main():
     sense = SenseHat()
@@ -36,8 +37,8 @@ def main():
         return 0
     else:
         print( "Displaying \'{0}\'".format( sys.argv[ 1 ] ) )
-    imageMatrix = LoadImageFromBIDF( sys.argv[ 1 ] )
-    sense.set_pixels( imageMatrix )
+    onOffMatrix = senseSuppLib.LoadPixelStatusFromBIDF( sys.argv[ 1 ] )
+    senseSuppLib.UpdateScreen( [ 255, 255, 255 ], onOffMatrix, sense )
     time.sleep( 3 )
     sense.clear()
 

@@ -21,14 +21,20 @@
 ##
 ##############################################################################
 
-def CharToColour( argChar ):
+def CharToPixel( argChar ):
+    """
+    Returns the pixel value 'True' (on) or 'False' (off) of the passed character
+    """
     # Any character being non-'X' will be treated as a blank pixel
     if argChar != 'X':
-        return [ 0, 0, 0 ]
+        return False
     else:
-        return [ 255, 255, 255 ]
+        return True
 
-def LoadImageFromBIDF( argPath ):
+def LoadPixelStatusFromBIDF( argPath ):
+    """
+    This returns a matrix of 64 'True'/'False' values loaded from the passed file
+    """
     imageMatrix = list()
     with open( argPath, 'r' ) as fileHandle:
         for line in fileHandle:
@@ -39,10 +45,30 @@ def LoadImageFromBIDF( argPath ):
                 break
             # If lines are to long, crop them
             for char in line[ : 8 ]:
-                imageMatrix.append( CharToColour( char ) )
+                imageMatrix.append( CharToPixel( char ) )
+            # Ensure that each line is exactly eight signs long
             if len( imageMatrix ) % 8 != 0:
-                imageMatrix.extend( [ [ 0, 0, 0 ] for i in range( 8 - len( imageMatrix ) % 8 ) ] )
+                imageMatrix.extend( [ False for i in range( 8 - len( imageMatrix ) % 8 ) ] )
+    if len( imageMatrix ) < 64:
+        imageMatrix.extend( [ False for i in range( 64 - len( imageMatrix ) ) ] )
     assert len( imageMatrix ) == 64
     return imageMatrix
+
+def StatusToColour( argColour, argStatus ):
+    """
+    Returns a colour value according to the passed status
+    """
+    # Any character being non-'X' will be treated as a blank pixel
+    if argStatus == True:
+        return argColour
+    else:
+        return [ 0, 0, 0 ]
+
+def UpdateScreen( argColour, argPixelStatuses, argSense ):
+    """
+    Updates the entire screen according to the passed pixel statuses with the passed colour
+    """
+    colourMatrix = [ StatusToColour( argColour, i ) for i in argPixelStatuses ]
+    argSense.set_pixels( colourMatrix )
 
 # vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
